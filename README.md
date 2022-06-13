@@ -2,7 +2,7 @@
 Created to learn concepts the basic concepts of Apache Kafka
 
 
-# Created a mini version of Apache Kafka
+# Created a gmini version of Apache Kafka
 
 
 
