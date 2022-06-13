@@ -1,5 +1,6 @@
 
 from http import client
+from pydoc_data.topics import topics
 import socket
 import pickle
 
@@ -9,8 +10,8 @@ import sys
 
 
 
-producerargs = ['add','delete','createtopic','deletetopic','describe']
-clientargs = ['subscribe','describe']
+producerargs = ['add','delete','createtopic','deletetopic']
+clientargs = ['subscribe']
 
 
 # next create a socket object
@@ -48,37 +49,40 @@ while True:
   recieved = c.recv(1024)
   data = pickle.loads(recieved)
   # Producer
-  if data[0] == 'producer.py' and '':
-    if len(data) == 3 or len(data) == 4 or len(data) == 2:
-      if len(data) == 3:
-        if data[1] == 'createtopic':
-      #check conditions
-          if data[2] in brokerobject.topic.keys():
-            c.send("Topic {} is already created".format(data[2]).encode())
-          else:
-            brokerobject.addtopic(data[2])
-            c.send("Topic {} created".format(data[2]).encode())
-        elif data[2] == 'deletetopic':
-          if data[2] in brokerobject.topic.keys():
-            brokerobject.deletetopic(data[2])
-            c.send("Topic {} is deleted".format(data[2]).encode())
-          else:
-            c.send("Topic {} is not available".format(data[2]).encode())
-      elif len(data) == 4:
-        if data[1] == 'add':
-          if data[2] in brokerobject.topic.keys():
-            brokerobject.addtopic(data[2],data[3])
-          else:
-            c.send("Topic {} is not available".format(data[2]).encode())
+  if data[0] == 'producer.py' and (len(data) == 3 or len(data) == 4) and (data[1] in producerargs):
+    if data[1] == 'createtopic': # createtopic argument
+      if data[2] in brokerobject.topic.keys():
+        c.send("Topic {} is already created".format(data[2]).encode())
+      else:
+        brokerobject.addtopic(data[2])
+        c.send("Topic {} created".format(data[2]).encode())
+    elif data[2] == 'deletetopic': #deletetopic argument
+      if data[2] in brokerobject.topic.keys():
+        brokerobject.deletetopic(data[2])
+        c.send("Topic {} is deleted".format(data[2]).encode())
+      else:
+        c.send("Topic {} is not available".format(data[2]).encode())
+    elif data[1] == 'add': # add argument
+      if data[2] in brokerobject.topic.keys():
+        brokerobject.addtopic(data[2],data[3])
+      else:
+        c.send("Topic {} is not available".format(data[2]).encode())
           
-        elif data[1] == 'delete':
-          if data[2] in brokerobject.topic.keys():
-            brokerobject.deletetopic(data[2],data[3])
-          else:
-            c.send("Topic {} is not available".format(data[2]).encode())
+    elif data[1] == 'delete': #delete argument
+      if data[2] in brokerobject.topic.keys():
+        brokerobject.deletetopic(data[2],data[3])
+      else:
+        c.send("Topic {} is not available".format(data[2]).encode())
+    
+  
   elif data[0] == 'consumer.py': 
     if data[1] == 'subscribe':  #Subscribe arguement
-    el
+      if data[2] not in brokerobject.topic.keys():
+        c.send("Topic {} is not available".format(data[2]).encode())
+      else:
+            
+  else:
+    c.send('Please try again'.encode())
 
   c.send('Thank you for connecting'.encode())
   
