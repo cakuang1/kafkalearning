@@ -32,33 +32,61 @@ A server that listens to producers and consumers. Helps update topics and delive
 # Quick start
 
 
-1 . Clone the repository into a directory of your choosing.
+Clone the repository into a directory of your choosing.
 
+
+```bash
+git clone https://github.com/cakuang1/kafkalearning
+cd kafkalearning
+```
 Change your directory into the new folder
-2 . Start the server by running 'python server.py' to start running your broker.
+
+
+
+Start the server by running 'python server.py' to start running your broker.
+
+```bash
+python server.py
+```
 
 Now that you have got your server running lets look at a few command line arguments.
 
-3. Start by creating a new topic and adding a message. Open a new terminal change directory into the same folder and call 'python createtopic 
 
 
+Start by creating a new topic and adding a message. Open a new terminal change directory into the same folder and call 'python producer.py createtopic <topic name>'. For this example we will name our topic 'test1'
+  
+  
+```bash
+python producer.py createtopic test1
+```
+
+We can confirm our topic is created by our describe module.
+  
+```bash
+python describe.py
+```
+  
+  
+Add a message by calling 'python producer.py add <topic name> <message>'. Lets insert 'hello' into our topic.
+  
+```bash
+python producer.py add test1 hello
+```
+
+Open another client and call 'python consumer.py subscribe <topic name>' to check messages in that specific topic
+  
+```bash
+python consumer.py subscribe test1
+```
 
 
-
-
-
-
-3.
-
-
-
-
-
-
-
-
-
+  
+  
+  
 **Using the producer and consumer APIs for creating your own application**
+
+  
+  
 
 
 
